@@ -1,5 +1,7 @@
 package edu.coursera.parallel;
 
+import edu.rice.pcdp.PCDP;
+
 import static edu.rice.pcdp.PCDP.*;
 
 /**
@@ -45,14 +47,11 @@ public final class MatrixMultiply {
          * achieve performance improvement.
          */
 
-        forall2dChunked(0, N - 1, 0, N -1 , (i, j) -> {
+        forall2dChunked(0, N - 1, 0, N -1 , PCDP.numThreads(), (i, j) -> {
             C[i][j] = 0.0;
             for (int k = 0; k < N; k++){
                 C[i][j] += A[i][k] * B[k][j];
             }
         });
-        /*forall2dChunked(0, N - 1, 0, N - 1, (i, j) -> {
-
-        });*/
     }
 }
