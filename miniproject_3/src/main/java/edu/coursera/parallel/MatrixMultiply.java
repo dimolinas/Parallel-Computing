@@ -46,7 +46,6 @@ public final class MatrixMultiply {
          * TODO Parallelize this outermost two-dimension sequential loop to
          * achieve performance improvement.
          */
-
         forall2dChunked(0, N - 1, 0, N -1 , PCDP.numThreads(), (i, j) -> {
             C[i][j] = 0.0;
             for (int k = 0; k < N; k++){
