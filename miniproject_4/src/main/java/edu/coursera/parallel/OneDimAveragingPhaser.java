@@ -48,6 +48,7 @@ public final class OneDimAveragingPhaser {
      * @param tasks The number of threads/tasks to use to compute the solution
      */
     public static void runParallelBarrier(final int iterations, final double[] myNew, final double[] myVal, final int n, final int tasks) {
+
         Phaser ph = new Phaser(0);
         ph.bulkRegister(tasks);
 
@@ -57,18 +58,19 @@ public final class OneDimAveragingPhaser {
             final int i = ii;
 
             threads[ii] = new Thread(() -> {
+
                 double[] arrayMyVal = myVal;
                 double[] arrayMyNew = myNew;
 
-                final int chunkSize = (n + tasks - 1) / tasks;
-                final int left = (i * chunkSize) + 1;
+                int chunkSize = (n + tasks - 1) / tasks;
+                int left = (i * chunkSize) + 1;
                 int right = (left + chunkSize) - 1;
+
                 if (right > n) right = n;
 
                 for (int iter = 0; iter < iterations; iter++) {
                     for (int j = left; j <= right; j++) {
-                        arrayMyNew[j] = (arrayMyVal[j - 1]
-                            + arrayMyVal[j + 1]) / 2.0;
+                        arrayMyNew[j] = (arrayMyVal[j - 1] + arrayMyVal[j + 1]) / 2.0;
                     }
                     ph.arriveAndAwaitAdvance();
 
@@ -118,9 +120,10 @@ public final class OneDimAveragingPhaser {
                 double[] arrayMyVal = myVal;
                 double[] arrayMyNew = myNew;
 
-                final int chunkSize = (n / tasks);
-                final int left = (i * chunkSize) + 1;
+                final int chunkSize = (n + tasks - 1) / tasks;
+                int left = (i * chunkSize) + 1;
                 int right = (i + 1) * (n / tasks) ;
+
                 if (right > n) right = n;
 
                 for (int iter = 0; iter < iterations; iter++) {
